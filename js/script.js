@@ -38,7 +38,7 @@ function loadCanvases() {
  * @param {string} canvas ID of canvas
  * @param {string} input ID of input type="file"
  */
-const loadImage = (canvas, input) => {
+function loadImage(canvas, input) {
     let cnvs = document.getElementById(canvas);
     let image = document.getElementById(input);
     let simpleImage = new SimpleImage(image);
@@ -60,7 +60,7 @@ const loadImage = (canvas, input) => {
  * 
  * @return {int}
  */
-const calculatePixel = (x, y) => {
+function calculatePixel(x, y) {
     // Combines the first 4 bits of y and the last 4 bits of x
     // to create another 0-255 number 
     return Math.floor(y/16)*16+Math.floor(x/16);
