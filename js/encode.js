@@ -86,7 +86,7 @@ const generateSecretImage = () => {
         if (!inputImage || !coverImage)
             reject(new Error('Missing image.'));
 
-        let outputImage = new SimpleImage(coverImage.getWidth(), coverImage.getHeight());
+        let outputImage = coverImage;
 
         inputImage.values().forEach(pixel => {
             const x = pixel.getX();
@@ -127,7 +127,6 @@ const createSecretImage = async () => {
     document.getElementById('create-button').disabled = true;
 
     try {
-        
         const outputImage = await generateSecretImage();
         outputImage.drawTo(outputCanvas);
         console.log('Done.');
