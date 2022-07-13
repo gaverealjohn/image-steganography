@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Secret | Image Steganography</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/encode.css">
+    <script src='https://www.dukelearntoprogram.com/course1/common/js/image/SimpleImage.js'></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <label for="input-image" class="file-label">
+                Select Input Image
+                <input 
+                type="file" 
+                multiple="false" 
+                accept="image/*" 
+                name="input-image" 
+                id="input-image"
+                onchange="loadImage('input-canvas', 'input-image')"
+                class="file-input"
+                />
+            </label>
+            <canvas id="input-canvas"></canvas>
+        </div>
+        <div class="row">
+            <label for="cover-image" class="file-label">
+                Select Cover Image
+                <input 
+                type="file" 
+                multiple="false" 
+                accept="image/*" 
+                name="cover-image" 
+                id="cover-image" 
+                onchange="loadImage('cover-canvas', 'cover-image')"
+                class="file-input"
+                />
+            </label>
+            <canvas id="cover-canvas"></canvas>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <button id="create-button" onclick="createSecretImage()">
+                Create Secret Image
+            </button>
+            <div id="progress-container">
+                <div id="progress-bar"></div>
+            </div>
+            <canvas id="output-canvas"></canvas>
+        </div>
+    </div>
+
+    <script src="js/encode.js"></script>
+</body>
+</html>

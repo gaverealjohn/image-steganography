@@ -9,50 +9,16 @@
     <script src='https://www.dukelearntoprogram.com/course1/common/js/image/SimpleImage.js'></script>
 </head>
 <body>
-    <div class="container">
-        <div class="row">
-            <label for="input-image" class="file-label">
-                Select Input Image
-                <input 
-                type="file" 
-                multiple="false" 
-                accept="image/*" 
-                name="input-image" 
-                id="input-image"
-                onchange="loadImage('input-canvas', 'input-image')"
-                class="file-input"
-                />
-            </label>
-            <canvas id="input-canvas"></canvas>
-        </div>
-        <div class="row">
-            <label for="cover-image" class="file-label">
-                Select Cover Image
-                <input 
-                type="file" 
-                multiple="false" 
-                accept="image/*" 
-                name="cover-image" 
-                id="cover-image" 
-                onchange="loadImage('cover-canvas', 'cover-image')"
-                class="file-input"
-                />
-            </label>
-            <canvas id="cover-canvas"></canvas>
-        </div>
-    </div>
-    <div class="container">
-        <div class="row">
-            <button id="create-button" onclick="createSecretImage()">
-                Create Secret Image
+    <div class="wrapper">
+        <h1>Image Steganography</h1>
+        <div class="container">
+            <button>
+                <a href="encode.html">Create Secret Image</a>
             </button>
-            <div id="progress-container">
-                <div id="progress-bar"></div>
-            </div>
-            <canvas id="output-canvas"></canvas>
+            <button>
+                <a href="decode.html">Decode Secrete Image</a>
+            </button>
         </div>
     </div>
-
-    <script src="js/script.js"></script>
 </body>
 </html>

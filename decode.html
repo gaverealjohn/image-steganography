@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decode Secret | Image Steganography</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/decode.css">
+    <script src='https://www.dukelearntoprogram.com/course1/common/js/image/SimpleImage.js'></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <label for="input-image" class="file-label">
+                Select Input Image
+                <input 
+                type="file" 
+                multiple="false" 
+                accept="image/*" 
+                name="input-image" 
+                id="input-image"
+                onchange="loadImage('input-canvas', 'input-image')"
+                class="file-input"
+                />
+            </label>
+            <canvas id="input-canvas"></canvas>
+        </div>
+        <div class="row">
+            <button id="decode-btn" onclick="decodeSecret()">
+                Decode Secret
+            </button>
+        </div>
+        <div class="row" id="output-row">
+            <canvas id="output-canvas"></canvas>
+        </div>
+    </div>
+
+    <script src="js/decode.js"></script>
+</body>
+</html>
