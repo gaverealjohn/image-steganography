@@ -39,11 +39,10 @@ const loadImage = (canvas, input) => {
     let image = document.getElementById(input);
     let simpleImage = new SimpleImage(image);
 
-    if (input === 'input-image') {
+    if (input === 'input-image')
         inputImage = simpleImage;
-    } else {
+    else
         coverImage = simpleImage;
-    }
 
     simpleImage.drawTo(cnvs);
 
@@ -52,34 +51,21 @@ const loadImage = (canvas, input) => {
 
 /**
  * Calculate resulting pixel from input image and cover image
+ * Combines the 4 most significant bits of the cover image value 
+ * and the 4 most significant bits of the input image value 
+ * to create another color value 
+ * 
+ * input: 10110010
+ * cover: 01110101
+ * output: 01111011
  * 
  * @param {int} x Input image color value
  * @param {int} y Cover image color value
  * 
- * @returns Value of new color
+ * @returns New color value
  */
-const calculatePixel = (x, y) => {
-    // Combines the first 4 bits of y and the last 4 bits of x
-    // to create another 0-255 number 
-    return (Math.floor(y / 16) * 16) + Math.floor(x / 16);
-};
-
-const generateNewPixel = pixel => {
-    const x = pixel.getX();
-    const y = pixel.getY();
-    const coverPixel = coverImage.getPixel(x, y);
-    
-    let outputPixel = coverPixel;
-    
-    let newRed = calculatePixel(pixel.getRed(), coverPixel.getRed());
-    let newGreen = calculatePixel(pixel.getGreen(), coverPixel.getGreen());
-    let newBlue = calculatePixel(pixel.getBlue(), coverPixel.getBlue());
-    
-    outputPixel.setRed(newRed);
-    outputPixel.setGreen(newGreen);
-    outputPixel.setBlue(newBlue);
-    
-    return outputPixel;
+const calculateNewValue = (inputValue, coverValue) => {
+    return (Math.floor(coverValue / 16) * 16) + Math.floor(inputValue / 16);
 };
 
 /**
@@ -88,18 +74,25 @@ const generateNewPixel = pixel => {
  * 
  * @returns A Promise
  */
-const iteratePixels = () => {
-    return new Promise(resolve => {
-        let outputImage = new SimpleImage(coverImage);
-        let progressBar = document.getElementById('progress-bar');
-        let width = 0;
+const generateSecretImage = () => {
+    return new Promise((resolve, reject) => {
+        if (!inputImage || !coverImage)
+            reject(new Error('Missing image.'));
+
+        let outputImage = new SimpleImage(coverImage.getWidth(), coverImage.getHeight());
 
         inputImage.values().forEach(pixel => {
-            let outputPixel = outputImage.getPixel(pixel.getX(), pixel.getY());
-            outputPixel = generateNewPixel(pixel);
-            if (progressBar.style.width !== "100%") {
-                progressBar.style.width = width + "%";
-            }
+            const x = pixel.getX();
+            const y = pixel.getY();
+            const coverPixel = coverImage.getPixel(x, y);
+            
+            let newRed = calculateNewValue(pixel.getRed(), coverPixel.getRed());
+            let newGreen = calculateNewValue(pixel.getGreen(), coverPixel.getGreen());
+            let newBlue = calculateNewValue(pixel.getBlue(), coverPixel.getBlue());
+            
+            outputImage.getPixel(x, y).setRed(newRed);
+            outputImage.getPixel(x, y).setGreen(newGreen);
+            outputImage.getPixel(x, y).setBlue(newBlue);
         });
 
         resolve(outputImage);
@@ -110,13 +103,18 @@ const iteratePixels = () => {
  * Generate secret image 
  */
 const createSecretImage = async () => {
+    // Disable create secret image button 
     document.getElementById('create-button').disabled = true;
 
-    const outputImage = await iteratePixels();
-
-    outputImage.drawTo(outputCanvas);
+    try {
+        
+        const outputImage = await generateSecretImage();
+        outputImage.drawTo(outputCanvas);
+        console.log('Done.');
+    } catch (error) {
+        console.error(error.message);
+    }
     
+    // Enable create secret image button 
     document.getElementById('create-button').disabled = false;
-
-    console.log('Done.');
 };
