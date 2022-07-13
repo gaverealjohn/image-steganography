@@ -62,7 +62,7 @@ const loadImage = (canvas, input) => {
 const calculatePixel = (x, y) => {
     // Combines the first 4 bits of y and the last 4 bits of x
     // to create another 0-255 number 
-    return Math.floor(y/16)*16+Math.floor(x/16);
+    return (Math.floor(y / 16) * 16) + Math.floor(x / 16);
 };
 
 const generateNewPixel = pixel => {
