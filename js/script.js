@@ -29,8 +29,6 @@ outputCtx.fillText('Output Image', 150, 70);
 let inputImage = null;
 let coverImage = null;
 
-const progressBar = document.getElementById('progress-bar');
-
 /**
  * Load image to appointed canvas
  * 
@@ -51,7 +49,6 @@ const loadImage = (canvas, input) => {
     simpleImage.drawTo(cnvs);
 
     outputCtx.clearRect(0, 0, outputCanvas.width, outputCanvas.height);
-    progressBar.value = 0;
 };
 
 /**
@@ -60,7 +57,7 @@ const loadImage = (canvas, input) => {
  * @param {int} x Input image color value
  * @param {int} y Cover image color value
  * 
- * @return {int} Value of new color
+ * @returns Value of new color
  */
 const calculatePixel = (x, y) => {
     // Combines the first 4 bits of y and the last 4 bits of x
@@ -72,29 +69,51 @@ const generateNewPixel = pixel => {
     const x = pixel.getX();
     const y = pixel.getY();
     const coverPixel = coverImage.getPixel(x, y);
-
+    
     let outputPixel = coverPixel;
     
     let newRed = calculatePixel(pixel.getRed(), coverPixel.getRed());
     let newGreen = calculatePixel(pixel.getGreen(), coverPixel.getGreen());
     let newBlue = calculatePixel(pixel.getBlue(), coverPixel.getBlue());
-
+    
     outputPixel.setRed(newRed);
     outputPixel.setGreen(newGreen);
     outputPixel.setBlue(newBlue);
-
+    
     return outputPixel;
+};
+
+/**
+ * Iterate through pixels of input image to make 
+ * pixels for the output image
+ * 
+ * @returns A Promise
+ */
+const iteratePixels = () => {
+    return new Promise(resolve => {
+        let outputImage = new SimpleImage(coverImage);
+        let progressBar = document.getElementById('progress-bar');
+        let width = 0;
+
+        inputImage.values().forEach(pixel => {
+            let outputPixel = outputImage.getPixel(pixel.getX(), pixel.getY());
+            outputPixel = generateNewPixel(pixel);
+            if (progressBar.style.width !== "100%") {
+                progressBar.style.width = width + "%";
+            }
+        });
+
+        resolve(outputImage);
+    });
 };
 
 /**
  * Generate secret image 
  */
-const createSecretImage = () => {
-    let outputImage = new SimpleImage(coverImage);
-
+const createSecretImage = async () => {
     document.getElementById('create-button').disabled = true;
 
-    outputImage.values = inputImage.values().map(generateNewPixel);
+    const outputImage = await iteratePixels();
 
     outputImage.drawTo(outputCanvas);
     
