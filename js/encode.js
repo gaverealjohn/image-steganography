@@ -25,26 +25,33 @@ outputCtx.textBaseline = 'middle';
 outputCtx.textAlign = 'center';
 outputCtx.fillText('Output Image', 150, 70);
 
-let inputImage = null;
-let coverImage = null;
+let inputImage;
+let coverImage;
 
 /**
- * Load image to appointed canvas
+ * Load input image to input canvas
  * 
- * @param {string} canvas ID of canvas
  * @param {string} input ID of input type="file"
  */
-const loadImage = (canvas, input) => {
-    let cnvs = document.getElementById(canvas);
+const loadInputImage = input => {
     let image = document.getElementById(input);
-    let simpleImage = new SimpleImage(image);
+    inputImage = new SimpleImage(image);
+    
+    inputImage.drawTo(inputCanvas);
 
-    if (input === 'input-image')
-        inputImage = simpleImage;
-    else
-        coverImage = simpleImage;
+    outputCtx.clearRect(0, 0, outputCanvas.width, outputCanvas.height);
+};
 
-    simpleImage.drawTo(cnvs);
+/**
+ * Load cover image to cover canvas
+ * 
+ * @param {string} input ID of input type="file"
+ */
+const loadCoverImage = input => {
+    let image = document.getElementById(input);
+    coverImage = new SimpleImage(image);
+    
+    coverImage.drawTo(coverCanvas);
 
     outputCtx.clearRect(0, 0, outputCanvas.width, outputCanvas.height);
 };
@@ -103,6 +110,19 @@ const generateSecretImage = () => {
  * Generate secret image 
  */
 const createSecretImage = async () => {
+    // Checks if cover image is compatible
+    // Cover image should be similar or higher
+    // in resolution with the input image
+    if (coverImage.getWidth() < inputImage.getWidth() || coverImage.getHeight() < inputImage.getHeight()) {
+        console.error('Cover image incompatible.');
+
+        const errContainer = document.getElementById('error-msg');
+        errContainer.style.color = "red";
+        errContainer.innerText = "Cover Image is too small.";
+        
+        return;
+    }
+    
     // Disable create secret image button 
     document.getElementById('create-button').disabled = true;
 

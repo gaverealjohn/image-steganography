@@ -10,6 +10,7 @@
     <script src='https://www.dukelearntoprogram.com/course1/common/js/image/SimpleImage.js'></script>
 </head>
 <body>
+    <div id="error-msg"></div>
     <div class="container">
         <div class="row">
             <label for="input-image" class="file-label">
@@ -20,7 +21,7 @@
                 accept="image/*" 
                 name="input-image" 
                 id="input-image"
-                onchange="loadImage('input-canvas', 'input-image')"
+                onchange="loadInputImage('input-image')"
                 class="file-input"
                 />
             </label>
@@ -35,7 +36,7 @@
                 accept="image/*" 
                 name="cover-image" 
                 id="cover-image" 
-                onchange="loadImage('cover-canvas', 'cover-image')"
+                onchange="loadCoverImage('cover-image')"
                 class="file-input"
                 />
             </label>
