@@ -79,37 +79,35 @@ const calculateNewValue = (inputValue, coverValue) => {
  * Iterate through pixels of input image to make 
  * pixels for the output image
  * 
- * @returns A Promise
+ * @returns A new image
  */
 const generateSecretImage = () => {
-    return new Promise((resolve, reject) => {
-        if (!inputImage || !coverImage)
-            reject(new Error('Missing image.'));
+    if (!inputImage || !coverImage)
+        return new Error('Missing image.');
 
-        let outputImage = coverImage;
+    let outputImage = coverImage;
 
-        inputImage.values().forEach(pixel => {
-            const x = pixel.getX();
-            const y = pixel.getY();
-            const coverPixel = coverImage.getPixel(x, y);
-            
-            let newRed = calculateNewValue(pixel.getRed(), coverPixel.getRed());
-            let newGreen = calculateNewValue(pixel.getGreen(), coverPixel.getGreen());
-            let newBlue = calculateNewValue(pixel.getBlue(), coverPixel.getBlue());
-            
-            outputImage.getPixel(x, y).setRed(newRed);
-            outputImage.getPixel(x, y).setGreen(newGreen);
-            outputImage.getPixel(x, y).setBlue(newBlue);
-        });
-
-        resolve(outputImage);
+    inputImage.values().forEach(pixel => {
+        const x = pixel.getX();
+        const y = pixel.getY();
+        const coverPixel = coverImage.getPixel(x, y);
+        
+        let newRed = calculateNewValue(pixel.getRed(), coverPixel.getRed());
+        let newGreen = calculateNewValue(pixel.getGreen(), coverPixel.getGreen());
+        let newBlue = calculateNewValue(pixel.getBlue(), coverPixel.getBlue());
+        
+        outputImage.getPixel(x, y).setRed(newRed);
+        outputImage.getPixel(x, y).setGreen(newGreen);
+        outputImage.getPixel(x, y).setBlue(newBlue);
     });
+
+    return outputImage;
 };
 
 /**
  * Generate secret image 
  */
-const createSecretImage = async () => {
+const createSecretImage = () => {
     // Checks if cover image is compatible
     // Cover image should be similar or higher
     // in resolution with the input image
@@ -127,7 +125,7 @@ const createSecretImage = async () => {
     document.getElementById('create-button').disabled = true;
 
     try {
-        const outputImage = await generateSecretImage();
+        const outputImage = generateSecretImage();
         outputImage.drawTo(outputCanvas);
         console.log('Done.');
     } catch (error) {

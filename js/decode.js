@@ -45,40 +45,38 @@ const getOutputValue = value => {
 };
 
 /**
- * Create a Promise that generates the secret image 
+ * Gnerates the secret image 
  * 
- * @returns Promise that generates the secret image
+ * @returns Image with the secret message
  */
 const extractSecret = () => {
-    return new Promise((resolve, reject) => {
-        if (!inputImage)
-            reject(new Error('No image providied.'));
+    if (!inputImage)
+        return new Error('No image providied.');
 
-        outputImage = new SimpleImage(inputImage.getWidth(), inputImage.getHeight());
+    outputImage = new SimpleImage(inputImage.getWidth(), inputImage.getHeight());
 
-        inputImage.values().forEach(pixel => {
-            const x = pixel.getX();
-            const y = pixel.getY();
-            
-            let newRed = getOutputValue(pixel.getRed());
-            let newGreen = getOutputValue(pixel.getGreen());
-            let newBlue = getOutputValue(pixel.getBlue());
-            
-            outputImage.getPixel(x, y).setRed(newRed);
-            outputImage.getPixel(x, y).setGreen(newGreen);
-            outputImage.getPixel(x, y).setBlue(newBlue);
-        });
-
-        resolve(outputImage);
+    inputImage.values().forEach(pixel => {
+        const x = pixel.getX();
+        const y = pixel.getY();
+        
+        let newRed = getOutputValue(pixel.getRed());
+        let newGreen = getOutputValue(pixel.getGreen());
+        let newBlue = getOutputValue(pixel.getBlue());
+        
+        outputImage.getPixel(x, y).setRed(newRed);
+        outputImage.getPixel(x, y).setGreen(newGreen);
+        outputImage.getPixel(x, y).setBlue(newBlue);
     });
+
+    return outputImage;
 };
 
 /**
  * Generate new image for the secret image
  */
-const decodeSecret = async () => {
+const decodeSecret = () => {
     try {
-        outputImage = await extractSecret();
+        outputImage = extractSecret();
 
         // Show output canvas 
         const outputContainer = document.getElementById('output-row');
