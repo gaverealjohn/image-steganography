@@ -7,23 +7,26 @@ const coverCtx = coverCanvas.getContext('2d');
 const outputCanvas = document.getElementById('output-canvas');
 const outputCtx = outputCanvas.getContext('2d');
 
-inputCtx.fillStyle = 'black';
-inputCtx.font = '1em sans-serif';
+inputCtx.fillStyle = '#0078AA';
+inputCtx.font = '0.8em monospace';
 inputCtx.textBaseline = 'middle';
 inputCtx.textAlign = 'center';
-inputCtx.fillText('Input Image', 150, 70);
+inputCtx.fillText('Hide this', 150, 70);
 
-coverCtx.fillStyle = 'black';
-coverCtx.font = '1em sans-serif';
+coverCtx.fillStyle = '#0078AA';
+coverCtx.font = '0.8em monospace';
 coverCtx.textBaseline = 'middle';
 coverCtx.textAlign = 'center';
-coverCtx.fillText('Cover Image', 150, 70);
+coverCtx.fillText('In this', 150, 70);
 
-outputCtx.fillStyle = 'black';
-outputCtx.font = '1em sans-serif';
-outputCtx.textBaseline = 'middle';
-outputCtx.textAlign = 'center';
-outputCtx.fillText('Output Image', 150, 70);
+// outputCtx.fillStyle = '#0078AA';
+// outputCtx.font = '0.8em monospace';
+// outputCtx.textBaseline = 'middle';
+// outputCtx.textAlign = 'center';
+// outputCtx.fillText('Output Image', 150, 70);
+
+const outputCont = document.getElementById('output-container')
+const createBtn = document.getElementById('create-button');
 
 let inputImage;
 let coverImage;
@@ -40,6 +43,7 @@ const loadInputImage = input => {
     inputImage.drawTo(inputCanvas);
 
     outputCtx.clearRect(0, 0, outputCanvas.width, outputCanvas.height);
+    outputCont.style.display = "none";
 };
 
 /**
@@ -53,7 +57,10 @@ const loadCoverImage = input => {
     
     coverImage.drawTo(coverCanvas);
 
+    createBtn.style.display = "block";
+
     outputCtx.clearRect(0, 0, outputCanvas.width, outputCanvas.height);
+    outputCont.style.display = "none";
 };
 
 /**
@@ -122,10 +129,11 @@ const createSecretImage = () => {
     }
     
     // Disable create secret image button 
-    document.getElementById('create-button').disabled = true;
+    createBtn.disabled = true;
 
     try {
         const outputImage = generateSecretImage();
+        outputCont.style.display = "block";
         outputImage.drawTo(outputCanvas);
         console.log('Done.');
     } catch (error) {
@@ -133,5 +141,6 @@ const createSecretImage = () => {
     }
     
     // Enable create secret image button 
-    document.getElementById('create-button').disabled = false;
+    createBtn.innerText = "Hide"
+    createBtn.disabled = false;
 };

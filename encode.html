@@ -13,8 +13,9 @@
     <div id="error-msg"></div>
     <div class="container">
         <div class="row">
+            <canvas id="input-canvas"></canvas>
             <label for="input-image" class="file-label">
-                Select Input Image
+                Hide this...
                 <input 
                 type="file" 
                 multiple="false" 
@@ -25,11 +26,11 @@
                 class="file-input"
                 />
             </label>
-            <canvas id="input-canvas"></canvas>
         </div>
         <div class="row">
+            <canvas id="cover-canvas"></canvas>
             <label for="cover-image" class="file-label">
-                Select Cover Image
+                In this
                 <input 
                 type="file" 
                 multiple="false" 
@@ -40,14 +41,18 @@
                 class="file-input"
                 />
             </label>
-            <canvas id="cover-canvas"></canvas>
         </div>
-    </div>
-    <div class="container">
         <div class="row">
-            <button id="create-button" onclick="createSecretImage()">
-                Create Secret Image
+            <button 
+            id="create-button" 
+            onclick="createSecretImage()"
+            style="display: none;"
+            >
+                Hide
             </button>
+        </div>
+        <div class="row" id="output-container" style="display: none;">
+            <h2>Your Encoded Image:</h1>
             <canvas id="output-canvas"></canvas>
         </div>
     </div>
