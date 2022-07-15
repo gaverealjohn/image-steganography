@@ -1,3 +1,6 @@
+/**
+ * Init
+ */
 const inputCanvas = document.getElementById('input-canvas');
 const inputCtx = inputCanvas.getContext('2d');
 
@@ -22,7 +25,12 @@ coverCtx.fillText('In this', 150, 70);
 const outputCont = document.getElementById('output-container')
 const createBtn = document.getElementById('create-button');
 const downloadBtn = document.getElementById('download-button');
+const progressBar = document.getElementById('progress-bar');
 
+const inputInput = document.getElementById('input-image');
+const coverInput = document.getElementById('cover-image');
+
+let image;
 let inputImage;
 let coverImage;
 
@@ -32,11 +40,11 @@ let coverImage;
  * @param {string} input ID of input type="file"
  */
 const loadInputImage = input => {
-    let image = document.getElementById(input);
+    image = document.getElementById(input);
     inputImage = new SimpleImage(image);
     
     inputImage.drawTo(inputCanvas);
-
+    
     outputCtx.clearRect(0, 0, outputCanvas.width, outputCanvas.height);
     outputCont.style.display = "none";
     outputCanvas.style.display = "none";
@@ -49,7 +57,7 @@ const loadInputImage = input => {
  * @param {string} input ID of input type="file"
  */
 const loadCoverImage = input => {
-    let image = document.getElementById(input);
+    image = document.getElementById(input);
     coverImage = new SimpleImage(image);
     
     coverImage.drawTo(coverCanvas);
@@ -128,12 +136,14 @@ const createSecretImage = () => {
         return;
     }
     
-    // Hide create secret image button 
-    createBtn.style.display = "none";
+    // Disable create button 
+    createBtn.disabled = true;
 
     try {
         const outputImage = generateSecretImage();
 
+        // Hide create secret image button 
+        createBtn.style.display = "none";
         outputCont.style.display = "block";
         // Show output canvas 
         outputCanvas.style.display = "flex";
