@@ -1,12 +1,23 @@
+:root {
+    --primary: black;
+    --accent: #302f2f;
+    --secondary: #F2DF3A;
+    --light: #F6F6F6;
+}
+
+* {
+    font-family: 'Courier New', Courier, monospace;
+}
+
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
 }
 
 .wrapper {
     position: fixed;
     top: 0;
     right: 0;
-    bottom: 0;
+    bottom: 50%;
     left: 0;
     display: flex;
     flex-direction: column;
@@ -14,7 +25,56 @@ body {
     align-items: center;
 }
 
+nav {
+    background-color: var(--light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-inline-start: 1rem;
+    padding-inline-end: 5rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px var(--accent) solid;
+}
+
+.nav-link {
+    list-style: none;
+}
+
+h1 {
+    color: var(--primary);
+}
+
+.container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 a {
     text-decoration: none;
-    color: black;
+    color: var(--accent);
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.button-link {
+    width: auto;
+    height: auto;
+    margin: 0 10px;
+    padding: 0.5rem 5%;
+    background-color: var(--light);
+    border: 1px var(--accent) solid;
+    border-radius: 5px;
+}
+
+.button-link:hover {
+    background-color: #ecedee;
+    cursor: pointer;
+}
+
+.action-button {
+    width: auto;
+    padding: 0 5rem;
+    align-self: center;
 }

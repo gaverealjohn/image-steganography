@@ -16,6 +16,11 @@ outputCtx.textBaseline = 'middle';
 outputCtx.textAlign = 'center';
 outputCtx.fillText('Output Image', 150, 70);
 
+const outputCont = document.getElementById('output-container');
+const outputRow = document.getElementById('output-row');
+const decodeBtn = document.getElementById('decode-button');
+const downloadBtn = document.getElementById('download-button');
+
 let inputImage = null;
 let outputImage = null;
 
@@ -28,7 +33,11 @@ const loadImage = () => {
     
     inputImage.drawTo(inputCanvas);
 
+    outputCont.style.display = "flex";
+    decodeBtn.style.display = "block";
     outputCtx.clearRect(0, 0, outputCanvas.width, outputCanvas.height);
+    outputRow.style.display = "none";
+    downloadBtn.style.display = "none";
 };
 
 /**
@@ -45,46 +54,47 @@ const getOutputValue = value => {
 };
 
 /**
- * Create a Promise that generates the secret image 
+ * Gnerates the secret image 
  * 
- * @returns Promise that generates the secret image
+ * @returns Image with the secret message
  */
 const extractSecret = () => {
-    return new Promise((resolve, reject) => {
-        if (!inputImage)
-            reject(new Error('No image providied.'));
+    if (!inputImage)
+        return new Error('No image providied.');
 
-        outputImage = new SimpleImage(inputImage.getWidth(), inputImage.getHeight());
+    outputImage = new SimpleImage(inputImage.getWidth(), inputImage.getHeight());
 
-        inputImage.values().forEach(pixel => {
-            const x = pixel.getX();
-            const y = pixel.getY();
-            
-            let newRed = getOutputValue(pixel.getRed());
-            let newGreen = getOutputValue(pixel.getGreen());
-            let newBlue = getOutputValue(pixel.getBlue());
-            
-            outputImage.getPixel(x, y).setRed(newRed);
-            outputImage.getPixel(x, y).setGreen(newGreen);
-            outputImage.getPixel(x, y).setBlue(newBlue);
-        });
-
-        resolve(outputImage);
+    inputImage.values().forEach(pixel => {
+        const x = pixel.getX();
+        const y = pixel.getY();
+        
+        let newRed = getOutputValue(pixel.getRed());
+        let newGreen = getOutputValue(pixel.getGreen());
+        let newBlue = getOutputValue(pixel.getBlue());
+        
+        outputImage.getPixel(x, y).setRed(newRed);
+        outputImage.getPixel(x, y).setGreen(newGreen);
+        outputImage.getPixel(x, y).setBlue(newBlue);
     });
+
+    return outputImage;
 };
 
 /**
  * Generate new image for the secret image
  */
-const decodeSecret = async () => {
+const decodeSecret = () => {
+    decodeBtn.style.display = "none";
+
     try {
-        outputImage = await extractSecret();
+        outputImage = extractSecret();
 
         // Show output canvas 
-        const outputContainer = document.getElementById('output-row');
-        outputContainer.style.display = "block";
+        outputRow.style.display = "flex";
     
         outputImage.drawTo(outputCanvas);
+
+        downloadBtn.style.display = "block";
     } catch (error) {
         console.error(error.message);
     }

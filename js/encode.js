@@ -8,22 +8,20 @@ const outputCanvas = document.getElementById('output-canvas');
 const outputCtx = outputCanvas.getContext('2d');
 
 inputCtx.fillStyle = 'black';
-inputCtx.font = '1em sans-serif';
+inputCtx.font = '0.8em monospace';
 inputCtx.textBaseline = 'middle';
 inputCtx.textAlign = 'center';
-inputCtx.fillText('Input Image', 150, 70);
+inputCtx.fillText('Hide this', 150, 70);
 
 coverCtx.fillStyle = 'black';
-coverCtx.font = '1em sans-serif';
+coverCtx.font = '0.8em monospace';
 coverCtx.textBaseline = 'middle';
 coverCtx.textAlign = 'center';
-coverCtx.fillText('Cover Image', 150, 70);
+coverCtx.fillText('In this', 150, 70);
 
-outputCtx.fillStyle = 'black';
-outputCtx.font = '1em sans-serif';
-outputCtx.textBaseline = 'middle';
-outputCtx.textAlign = 'center';
-outputCtx.fillText('Output Image', 150, 70);
+const outputCont = document.getElementById('output-container')
+const createBtn = document.getElementById('create-button');
+const downloadBtn = document.getElementById('download-button');
 
 let inputImage;
 let coverImage;
@@ -40,6 +38,9 @@ const loadInputImage = input => {
     inputImage.drawTo(inputCanvas);
 
     outputCtx.clearRect(0, 0, outputCanvas.width, outputCanvas.height);
+    outputCont.style.display = "none";
+    outputCanvas.style.display = "none";
+    downloadBtn.style.display = "none";
 };
 
 /**
@@ -53,7 +54,13 @@ const loadCoverImage = input => {
     
     coverImage.drawTo(coverCanvas);
 
+    outputCont.style.display = "flex";
+    createBtn.style.display = "block";
+
     outputCtx.clearRect(0, 0, outputCanvas.width, outputCanvas.height);
+    createBtn.disabled = false;
+    outputCanvas.style.display = "none";
+    downloadBtn.style.display = "none";
 };
 
 /**
@@ -79,37 +86,35 @@ const calculateNewValue = (inputValue, coverValue) => {
  * Iterate through pixels of input image to make 
  * pixels for the output image
  * 
- * @returns A Promise
+ * @returns A new image
  */
 const generateSecretImage = () => {
-    return new Promise((resolve, reject) => {
-        if (!inputImage || !coverImage)
-            reject(new Error('Missing image.'));
+    if (!inputImage || !coverImage)
+        return new Error('Missing image.');
 
-        let outputImage = coverImage;
+    let outputImage = coverImage;
 
-        inputImage.values().forEach(pixel => {
-            const x = pixel.getX();
-            const y = pixel.getY();
-            const coverPixel = coverImage.getPixel(x, y);
-            
-            let newRed = calculateNewValue(pixel.getRed(), coverPixel.getRed());
-            let newGreen = calculateNewValue(pixel.getGreen(), coverPixel.getGreen());
-            let newBlue = calculateNewValue(pixel.getBlue(), coverPixel.getBlue());
-            
-            outputImage.getPixel(x, y).setRed(newRed);
-            outputImage.getPixel(x, y).setGreen(newGreen);
-            outputImage.getPixel(x, y).setBlue(newBlue);
-        });
-
-        resolve(outputImage);
+    inputImage.values().forEach(pixel => {
+        const x = pixel.getX();
+        const y = pixel.getY();
+        const coverPixel = coverImage.getPixel(x, y);
+        
+        let newRed = calculateNewValue(pixel.getRed(), coverPixel.getRed());
+        let newGreen = calculateNewValue(pixel.getGreen(), coverPixel.getGreen());
+        let newBlue = calculateNewValue(pixel.getBlue(), coverPixel.getBlue());
+        
+        outputImage.getPixel(x, y).setRed(newRed);
+        outputImage.getPixel(x, y).setGreen(newGreen);
+        outputImage.getPixel(x, y).setBlue(newBlue);
     });
+
+    return outputImage;
 };
 
 /**
  * Generate secret image 
  */
-const createSecretImage = async () => {
+const createSecretImage = () => {
     // Checks if cover image is compatible
     // Cover image should be similar or higher
     // in resolution with the input image
@@ -123,17 +128,21 @@ const createSecretImage = async () => {
         return;
     }
     
-    // Disable create secret image button 
-    document.getElementById('create-button').disabled = true;
+    // Hide create secret image button 
+    createBtn.style.display = "none";
 
     try {
-        const outputImage = await generateSecretImage();
+        const outputImage = generateSecretImage();
+
+        outputCont.style.display = "block";
+        // Show output canvas 
+        outputCanvas.style.display = "flex";
+        
         outputImage.drawTo(outputCanvas);
+
+        downloadBtn.style.display = "block";
         console.log('Done.');
     } catch (error) {
         console.error(error.message);
     }
-    
-    // Enable create secret image button 
-    document.getElementById('create-button').disabled = false;
 };
