@@ -16,6 +16,11 @@ outputCtx.textBaseline = 'middle';
 outputCtx.textAlign = 'center';
 outputCtx.fillText('Output Image', 150, 70);
 
+const outputCont = document.getElementById('output-container');
+const outputRow = document.getElementById('output-row');
+const decodeBtn = document.getElementById('decode-button');
+const downloadBtn = document.getElementById('download-button');
+
 let inputImage = null;
 let outputImage = null;
 
@@ -28,7 +33,11 @@ const loadImage = () => {
     
     inputImage.drawTo(inputCanvas);
 
+    outputCont.style.display = "flex";
+    decodeBtn.style.display = "block";
     outputCtx.clearRect(0, 0, outputCanvas.width, outputCanvas.height);
+    outputRow.style.display = "none";
+    downloadBtn.style.display = "none";
 };
 
 /**
@@ -75,14 +84,17 @@ const extractSecret = () => {
  * Generate new image for the secret image
  */
 const decodeSecret = () => {
+    decodeBtn.style.display = "none";
+
     try {
         outputImage = extractSecret();
 
         // Show output canvas 
-        const outputContainer = document.getElementById('output-row');
-        outputContainer.style.display = "block";
+        outputRow.style.display = "flex";
     
         outputImage.drawTo(outputCanvas);
+
+        downloadBtn.style.display = "block";
     } catch (error) {
         console.error(error.message);
     }

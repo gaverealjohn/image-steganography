@@ -1,6 +1,8 @@
 :root {
-    --primary: #0078AA;
-    --accent: #3AB4F2;
+    /* --primary: #0078AA; */
+    /* --accent: #3AB4F2; */
+    --primary: black;
+    --accent: #302f2f;
     --secondary: #F2DF3A;
     --light: #F6F6F6;
 }
@@ -43,8 +45,14 @@ button {
 }
 
 button:hover {
-    background-color: #afd5e9;
+    background-color: #ecedee;
     cursor: pointer;
+}
+
+.action-button {
+    width: auto;
+    padding: 0 5rem;
+    align-self: center;
 }
 
 a {

@@ -10,31 +10,47 @@
     <script src='https://www.dukelearntoprogram.com/course1/common/js/image/SimpleImage.js'></script>
 </head>
 <body>
-    <div class="container">
-        <div class="row">
-            <label for="input-image" class="file-label">
-                Select Input Image
-                <input 
-                type="file" 
-                multiple="false" 
-                accept="image/*" 
-                name="input-image" 
-                id="input-image"
-                onchange="loadImage()"
-                class="file-input"
-                />
-            </label>
-            <canvas id="input-canvas"></canvas>
+    <div class="wrapper">
+        <div class="container">
+            <div class="row">
+                <label for="input-image" class="file-label">
+                    Select Input Image
+                    <input 
+                    type="file" 
+                    multiple="false" 
+                    accept="image/*" 
+                    name="input-image" 
+                    id="input-image"
+                    onchange="loadImage()"
+                    class="file-input"
+                    />
+                </label>
+                <canvas id="input-canvas"></canvas>
+            </div>
         </div>
-        <div class="row">
-            <button id="decode-btn" onclick="decodeSecret()">
+        <div class="container"  id="output-container" style="display: none;">
+            <div class="row">
+                <button 
+                class="action-button" 
+                id="decode-button" 
+                onclick="decodeSecret()"
+                style="display: none;"
+                >
                 Decode Secret
             </button>
         </div>
         <div class="row" id="output-row">
             <canvas id="output-canvas"></canvas>
         </div>
+        <button 
+        class="action-button" 
+        id="download-button" 
+        style="display: none;"
+            >
+            Download
+        </button>
     </div>
+</div>
 
     <script src="js/decode.js"></script>
 </body>

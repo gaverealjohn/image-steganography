@@ -7,26 +7,21 @@ const coverCtx = coverCanvas.getContext('2d');
 const outputCanvas = document.getElementById('output-canvas');
 const outputCtx = outputCanvas.getContext('2d');
 
-inputCtx.fillStyle = '#0078AA';
+inputCtx.fillStyle = 'black';
 inputCtx.font = '0.8em monospace';
 inputCtx.textBaseline = 'middle';
 inputCtx.textAlign = 'center';
 inputCtx.fillText('Hide this', 150, 70);
 
-coverCtx.fillStyle = '#0078AA';
+coverCtx.fillStyle = 'black';
 coverCtx.font = '0.8em monospace';
 coverCtx.textBaseline = 'middle';
 coverCtx.textAlign = 'center';
 coverCtx.fillText('In this', 150, 70);
 
-// outputCtx.fillStyle = '#0078AA';
-// outputCtx.font = '0.8em monospace';
-// outputCtx.textBaseline = 'middle';
-// outputCtx.textAlign = 'center';
-// outputCtx.fillText('Output Image', 150, 70);
-
 const outputCont = document.getElementById('output-container')
 const createBtn = document.getElementById('create-button');
+const downloadBtn = document.getElementById('download-button');
 
 let inputImage;
 let coverImage;
@@ -44,6 +39,8 @@ const loadInputImage = input => {
 
     outputCtx.clearRect(0, 0, outputCanvas.width, outputCanvas.height);
     outputCont.style.display = "none";
+    outputCanvas.style.display = "none";
+    downloadBtn.style.display = "none";
 };
 
 /**
@@ -57,10 +54,13 @@ const loadCoverImage = input => {
     
     coverImage.drawTo(coverCanvas);
 
+    outputCont.style.display = "flex";
     createBtn.style.display = "block";
 
     outputCtx.clearRect(0, 0, outputCanvas.width, outputCanvas.height);
-    outputCont.style.display = "none";
+    createBtn.disabled = false;
+    outputCanvas.style.display = "none";
+    downloadBtn.style.display = "none";
 };
 
 /**
@@ -128,19 +128,21 @@ const createSecretImage = () => {
         return;
     }
     
-    // Disable create secret image button 
-    createBtn.disabled = true;
+    // Hide create secret image button 
+    createBtn.style.display = "none";
 
     try {
         const outputImage = generateSecretImage();
+
         outputCont.style.display = "block";
+        // Show output canvas 
+        outputCanvas.style.display = "flex";
+        
         outputImage.drawTo(outputCanvas);
+
+        downloadBtn.style.display = "block";
         console.log('Done.');
     } catch (error) {
         console.error(error.message);
     }
-    
-    // Enable create secret image button 
-    createBtn.innerText = "Hide"
-    createBtn.disabled = false;
 };

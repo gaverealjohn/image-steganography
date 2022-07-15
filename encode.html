@@ -42,18 +42,27 @@
                 />
             </label>
         </div>
+    </div>
+    <div class="container no-mt" id="output-container" style="display: none;">
         <div class="row">
+            <canvas 
+                id="output-canvas"
+                style="display: none;"
+            ></canvas>
             <button 
-            id="create-button" 
-            onclick="createSecretImage()"
-            style="display: none;"
+                class="action-button"
+                id="create-button" 
+                onclick="createSecretImage()"
             >
                 Hide
             </button>
-        </div>
-        <div class="row" id="output-container" style="display: none;">
-            <h2>Your Encoded Image:</h1>
-            <canvas id="output-canvas"></canvas>
+            <button
+                class="action-button"
+                id="download-button"
+                style="display: none;"
+            >
+                Download
+            </button>
         </div>
     </div>
 
