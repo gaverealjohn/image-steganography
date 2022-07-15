@@ -75,6 +75,23 @@ a {
 
 .action-button {
     width: auto;
-    padding: 0 5rem;
+    height: auto;
+    padding: 0.5rem 5rem;
+    background-color: var(--light);
+    border: 1px var(--accent) solid;
+    border-radius: 5px;
     align-self: center;
+    font-size: 1.2rem;
+}
+
+.action-button:hover {
+    cursor: pointer;
+    background-color: #ecedee;
+}
+
+.action-button:disabled,
+.action-button[disabled] {
+    cursor: not-allowed;
+    color: #b9b9b9;
+    border-color: #b9b9b9;
 }
