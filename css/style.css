@@ -1,6 +1,4 @@
 :root {
-    /* --primary: #0078AA; */
-    /* --accent: #3AB4F2; */
     --primary: black;
     --accent: #302f2f;
     --secondary: #F2DF3A;
@@ -9,6 +7,10 @@
 
 * {
     font-family: 'Courier New', Courier, monospace;
+}
+
+body {
+    margin: 0;
 }
 
 .wrapper {
@@ -23,6 +25,21 @@
     align-items: center;
 }
 
+nav {
+    background-color: var(--light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-inline-start: 1rem;
+    padding-inline-end: 5rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px var(--accent) solid;
+}
+
+.nav-link {
+    list-style: none;
+}
+
 h1 {
     color: var(--primary);
 }
@@ -34,17 +51,24 @@ h1 {
     justify-content: center;
 }
 
-button {
+a {
+    text-decoration: none;
+    color: var(--accent);
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.button-link {
     width: auto;
-    height: 2.5rem;
+    height: auto;
     margin: 0 10px;
-    padding: 0 5%;
+    padding: 0.5rem 5%;
     background-color: var(--light);
     border: 1px var(--accent) solid;
     border-radius: 5px;
 }
 
-button:hover {
+.button-link:hover {
     background-color: #ecedee;
     cursor: pointer;
 }
@@ -53,11 +77,4 @@ button:hover {
     width: auto;
     padding: 0 5rem;
     align-self: center;
-}
-
-a {
-    text-decoration: none;
-    color: var(--accent);
-    font-size: 1.2rem;
-    font-weight: bold;
 }
